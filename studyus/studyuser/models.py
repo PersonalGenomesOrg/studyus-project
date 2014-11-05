@@ -27,11 +27,12 @@ class StudyUser(models.Model):
     class Meta:
         abstract = True
 
-    def __init__(self, email):
-        username = self._get_user_id()
+    @classmethod
+    def create(cls, email):
+        username = cls._get_user_id()
         user = User(username=username, email=email)
         user.save()
-        return super(StudyUser, self).__init__(user=user)
+        return cls(user=user)
 
     @property
     def email(self):

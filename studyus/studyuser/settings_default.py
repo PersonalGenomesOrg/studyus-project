@@ -16,3 +16,15 @@ STUDYUS_STUDYUSER_USER_ID_LEN = getattr(
     settings,
     'STUDYUS_STUDYUSER_USER_ID_LEN',
     10)
+
+STUDYUS_STUDYUSER_SIGNUP_SUCC_URL = getattr(
+    settings,
+    'STUDYUS_STUDYUSER_SIGNUP_SUCC_URL',
+    '/'
+)
+
+STUDYUS_STUDYUSER_LOGIN_SUCC_URL = getattr(
+    settings,
+    'STUDYUS_STUDYUSER_LOGIN_SUCC_URL',
+    '/'
+)
