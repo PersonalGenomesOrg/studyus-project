@@ -23,7 +23,7 @@ class ParticipantCreationForm(forms.Form):
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        if User.objects.filter(email=email):
+        if User.objects.filter(email__iexact=email):
             raise forms.ValidationError(
                 self.error_messages['email_not_unique'],
                 code='email_not_unique'
