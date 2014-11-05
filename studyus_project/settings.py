@@ -1,5 +1,5 @@
 """
-Django settings for studiology_project project.
+Django settings for studyus_project project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -36,6 +36,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'studyus_project',
+    'studyus',
+    'studyus.studyuser',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -48,9 +52,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'studiology_project.urls'
+ROOT_URLCONF = 'studyus_project.urls'
 
-WSGI_APPLICATION = 'studiology_project.wsgi.application'
+WSGI_APPLICATION = 'studyus_project.wsgi.application'
 
 
 # Database

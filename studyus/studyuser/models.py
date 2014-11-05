@@ -1,14 +1,9 @@
 from django.db import models
 
-from django.conf import settings
 from django.contrib.auth.models import User
 
-from .. import settings_defaults as studyuser_defaults
-
-# Import this default specifically so we can check if it's been overridden.
-from ..settings_defaults import DEFAULT_STUDYUS_STUDYUSER_GEN_USER_ID
-
-settings.configure(default_settings=studyuser_defaults)
+from .settings_default import (STUDYUS_STUDYUSER_GEN_USER_ID as GEN_USER_ID,
+                               STUDYUS_STUDYUSER_USER_ID_LEN as USER_ID_LEN)
 
 
 class StudyUser(models.Model):
@@ -21,24 +16,29 @@ class StudyUser(models.Model):
     These are stored in the corresponding User's email and username fields,
     but can be called as attributes in StudyUser itself.
     """
+    # TODO notes:
+    # Consider supporting names, but make sure this is optional on ALL levels.
+    # Consider optional postal addresses, but globalization is an issue.
+    # Consider optional arbitrary study-assigned IDs.
+    # Consider optional user designated handles (usernames).
 
     user = models.OneToOneField(User)
 
     class Meta:
         abstract = True
 
-    def __init__(self, email, *args, **kwargs):
-        this_user = User(email=email,
-                         username=self.generate_user_id())
-        this_user.save()
-        super(StudyUser, self).__init__(user=this_user, *args, **kwargs)
+    def __init__(self, email):
+        username = self._get_user_id()
+        user = User(username=username, email=email)
+        user.save()
+        return super(StudyUser, self).__init__(user=user)
 
     @property
     def email(self):
         return self.user.email
 
     @property
-    def user_id(self):
+    def random_id(self):
         return self.user.username
 
     @classmethod
@@ -47,6 +47,7 @@ class StudyUser(models.Model):
         user_id = cls.generate_user_id()
         while cls.objects.filter(user_id=user_id):
             user_id = cls.generate_user_id()
+        return user_id
 
     @staticmethod
     def generate_user_id():
@@ -56,11 +57,16 @@ class StudyUser(models.Model):
         STUDYUS_STUDYUSER_GEN_USER_ID can be set as a zero-argument lambda to
             create a custom random user ID.
         """
-        gen_user_id_fun = settings['STUDYUS_STUDYUSER_GEN_USER_ID']
-        if gen_user_id_fun == DEFAULT_STUDYUS_STUDYUSER_GEN_USER_ID:
-            return gen_user_id_fun(settings['STUDYUS_STUDYUSER_USER_ID_LEN'])
-        else:
-            return gen_user_id_fun()
+        try:
+            return GEN_USER_ID(USER_ID_LEN)
+        except TypeError:
+            try:
+                return GEN_USER_ID()
+            except TypeError:
+                msg = ("STUDYUS_STUDYUSER_GEN_USER_ID must be a function " +
+                       "that expects either one argument (an int defined by " +
+                       "STUDYUS_STUDYUSER_USER_ID_LEN) or no arguments.")
+                raise TypeError(msg)
 
 
 class StudyParticipant(StudyUser):
@@ -69,5 +75,9 @@ class StudyParticipant(StudyUser):
 
 
 class StudyAdmin(StudyUser):
-    """A StudyUser representing a study administrator."""
-    is_admin = True
+    """A StudyUser representing a study administrator.
+
+    The StudyAdmin is_admin field defaults to "False" upon account creation,
+    and must be set to "True" by a site administrator.
+    """
+    is_admin = models.BooleanField(default=False)
