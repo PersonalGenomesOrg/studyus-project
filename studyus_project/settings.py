@@ -1,33 +1,23 @@
 """
 Django settings for studyus_project project.
 
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
+These are development settings and should not be used by a production site.
+See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
+from django.conf import global_settings
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
+# FOR DEVELOPMENT PURPOSES ONLY
 SECRET_KEY = 'mvjwx1d09!(3j-m4ls7+n-kgf*^l21+c3n%ptn0sfiniy-xq$4'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-
-# Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -37,7 +27,13 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Demo project
     'studyus_project',
+
+    # Installed apps used by studyus
+    'account',
+
+    # Studyus apps
     'studyus',
     'studyus.studyuser',
 )
@@ -50,16 +46,17 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Required by studyus
+    'account.middleware.LocaleMiddleware',
+    'account.middleware.TimezoneMiddleware',
 )
 
 ROOT_URLCONF = 'studyus_project.urls'
 
 WSGI_APPLICATION = 'studyus_project.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
+# SQLite isn't high performance, but has native Django support.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -68,20 +65,29 @@ DATABASES = {
 }
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
-
 STATIC_URL = '/static/'
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    # Required by studyus
+    'account.context_processors.account',
+
+    # Allows templates to access the 'request' object
+    'django.core.context_processors.request',
+
+) + global_settings.TEMPLATE_CONTEXT_PROCESSORS
+
+# studyus required settings
+ACCOUNT_EMAIL_UNIQUE = True
+
+# This requires a user to conifrm email before they can log in.
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
+
+# Account related features you may wish to override.
+# ACCOUNT_LOGIN_URL (Default: 'account_login')

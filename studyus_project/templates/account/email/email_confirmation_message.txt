@@ -1,0 +1,7 @@
+Here's your context...
+
+{{ email_address }}
+{{ user }}
+{{ activate_url }}
+{{ current_site }}
+{{ key }}
