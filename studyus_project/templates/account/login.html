@@ -1,0 +1,14 @@
+<form id="login-user" method="post" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  <input type="submit" value="Log in">
+</form>
+
+<p>
+  <a href="{% url 'account_password_reset' %}">Reset password</a>
+</p>
+<p>
+  <a href="{% url 'account_signup' %}">Create an account</a>
+</p>

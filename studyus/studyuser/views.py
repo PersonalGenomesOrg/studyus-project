@@ -1,10 +1,9 @@
-import hashlib
-
-from django.conf import settings
-
+import account.forms
 import account.views
 
 from .forms import SignupForm
+from .settings import (STUDYUS_STUDYUSER_GEN_USER_ID as GEN_USER_ID,
+                       STUDYUS_STUDYUSER_USER_ID_LEN as USER_ID_LEN)
 
 
 class SignupView(account.views.SignupView):
@@ -12,12 +11,10 @@ class SignupView(account.views.SignupView):
     form_class = SignupForm
 
     def generate_username(self, form):
-        """
-        User's username field is replaced with a hash derived from the email.
+        """Fill username field with a short random string."""
+        return GEN_USER_ID(USER_ID_LEN)
 
-        The hash uses the site's SECRET_KEY as salt to make this a safe
-        user identifier for anonymously identifying a user. The hash is then
-        truncated to 30 characters because this is Django's username limit.
-        """
-        salted = form.cleaned_data['email'] + settings.SECRET_KEY
-        return hashlib.sha1(salted).hexdigest()[:30]
+
+class LoginView(account.views.LoginView):
+
+    form_class = account.forms.LoginEmailForm

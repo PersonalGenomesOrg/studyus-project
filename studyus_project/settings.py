@@ -12,7 +12,7 @@ from django.conf import global_settings
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # FOR DEVELOPMENT PURPOSES ONLY
-SECRET_KEY = 'mvjwx1d09!(3j-m4ls7+n-kgf*^l21+c3n%ptn0sfiniy-xq$4'
+SECRET_KEY = 'mvjwx1d09!(3j-m4ls7+n-kgf*^l21+c3n5atn0sfiniy-xq$4'
 DEBUG = True
 TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
@@ -74,8 +74,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
+AUTHENTICATION_BACKENDS = (
+    # Required for studyus's usage of django-user-accounts.
+    'account.auth_backends.EmailAuthenticationBackend',
+) + global_settings.AUTHENTICATION_BACKENDS
+
 TEMPLATE_CONTEXT_PROCESSORS = (
-    # Required by studyus
+    # Required for studyus's usage of django-user-accounts.
     'account.context_processors.account',
 
     # Allows templates to access the 'request' object
@@ -86,8 +91,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # studyus required settings
 ACCOUNT_EMAIL_UNIQUE = True
 
-# This requires a user to conifrm email before they can log in.
+# This requires a user to confirm email before they can log in.
 ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
+
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = None
 
 # Account related features you may wish to override.
 # ACCOUNT_LOGIN_URL (Default: 'account_login')

@@ -4,7 +4,12 @@
 
 ### Required settings for studyus
 
-    ACCOUNT_EMAIL_UNIQUE = True
+    ACCOUNT_EMAIL_UNIQUE = True                 # default
+
+### Recommended settings for studyus
+
+    ACCOUNT_EMAIL_CONFIRMATION_EMAIL = True     # default
+    ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True  # not default
 
 ### Settings available from django-user-accounts
 
@@ -33,7 +38,7 @@
 * **ACCOUNT_REMEMBER_ME_EXPIRY**
   * **Default:** `60 * 60 * 24 * 365 * 10`
   * How many seconds to maintain the session (see Django sessions). The
-  default is 10 years.
+  default is a couple leap days short of 10 years.
 * **ACCOUNT_USER_DISPLAY**
   * **Default:** `lambda user: user.username`
 * **ACCOUNT_CREATE_ON_SAVE**

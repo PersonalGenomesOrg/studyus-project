@@ -7,8 +7,8 @@
 </p>
 
 {% if request.user.email %}
-  <a href="{% url 'studyus:studyuser:logout' %}">Log out</a>
+  <a href="{% url 'account_logout' %}">Log out</a>
 {% else %}
-  <a href="{% url 'studyus:studyuser:login' %}">Log in</a><br/>
-  <a href="{% url 'studyus:studyuser:participant-signup' %}">Create account</a>
+  <a href="{% url 'account_login' %}">Log in</a><br/>
+  <a href="{% url 'account_signup' %}">Create account</a>
 {% endif %}

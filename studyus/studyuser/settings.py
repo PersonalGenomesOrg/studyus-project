@@ -23,8 +23,6 @@ import string
 
 from django.conf import settings
 
-FOO = getattr(settings, 'FOO', "default_value")
-
 
 STUDYUS_STUDYUSER_GEN_USER_ID = getattr(
     settings,
@@ -35,33 +33,3 @@ STUDYUS_STUDYUSER_USER_ID_LEN = getattr(
     settings,
     'STUDYUS_STUDYUSER_USER_ID_LEN',
     10)
-
-STUDYUS_STUDYUSER_SIGNUP_SUCC_URL = getattr(
-    settings,
-    'STUDYUS_STUDYUSER_SIGNUP_SUCC_URL',
-    '/'
-)
-
-STUDYUS_STUDYUSER_LOGIN_SUCC_URL = getattr(
-    settings,
-    'STUDYUS_STUDYUSER_LOGIN_SUCC_URL',
-    '/'
-)
-
-STUDYUS_STUDYUSER_LOGOUT_URL = getattr(
-    settings,
-    'STUDYUS_STUDYUSER_LOGOUT_URL',
-    '/'
-)
-
-STUDYUS_STUDYUSER_EMAIL_VALIDATION = getattr(
-    settings,
-    'STUDYUS_STUDYUSER_EMAIL_VALIDATION',
-    False
-)
-
-STUDYUS_STUDYUSER_LOGGED_IN_POST_SIGNUP = getattr(
-    settings,
-    'STUDYUS_STUDYUSER_LOGGED_IN_POST_SIGNUP',
-    True
-)

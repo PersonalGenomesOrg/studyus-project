@@ -1,7 +1,5 @@
-Here's your context...
+Thanks for creating an account!
 
-{{ email_address }}
-{{ user }}
+We need you to confirm your email address by confirming receipt of this
+email. You can do this by going to this URL:
 {{ activate_url }}
-{{ current_site }}
-{{ key }}
