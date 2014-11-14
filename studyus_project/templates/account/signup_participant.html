@@ -1,5 +1,6 @@
 <p>Create a participant account</p>
-<form id="create-study-participant" method="post" action="/studyus/studyuser/participant-signup/">
+<form id="create-user" method="post"
+    action="{% url 'account_signup_participant' %}">
   {% csrf_token %}
   {{ form.as_p }}
   <input type="submit" value="Create account">

@@ -1,6 +1,0 @@
-<p>Create an account</p>
-<form id="create-user" method="post" action="{% url 'studyus:studyuser:account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Create account">
-</form>

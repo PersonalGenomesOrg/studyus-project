@@ -1,20 +1,25 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 
 import studyus.studyuser.views
 
 urlpatterns = patterns(
     '',
 
-    # Override required for some default django-user-accounts urls.
-    url(r"^account/signup/$", studyus.studyuser.views.SignupView.as_view(),
+    # Override the default django-user-accounts to prevent accidental usage.
+    url(r"^account/signup/$", RedirectView.as_view(url='/'),
         name="account_signup"),
-    # url(r"^account/login/$", studyus.studyuser.LoginView.as_view(), name="account_login"),
+    url(r"^account/signup/researcher/$",
+        studyus.studyuser.views.ResearcherSignupView.as_view(),
+        name="account_signup_researcher"),
+    url(r"^account/signup/participant/$",
+        studyus.studyuser.views.ParticipantSignupView.as_view(),
+        name="account_signup_participant"),
     url(r"^account/", include("account.urls")),
 
-    url(r'^studyus/', include('studyus.urls', namespace='studyus')),
-
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', TemplateView.as_view(template_name='pages/home.html'))
+
+    url(r'^$', TemplateView.as_view(template_name='pages/home.html'),
+        name='home')
 )

@@ -8,7 +8,10 @@
 
 {% if request.user.email %}
   <a href="{% url 'account_logout' %}">Log out</a>
+  <a href="{% url 'account_password' %}">Change password</a>
 {% else %}
   <a href="{% url 'account_login' %}">Log in</a><br/>
-  <a href="{% url 'account_signup' %}">Create account</a>
+  <a href="{% url 'account_signup_participant' %}">
+    Create participant account</a><br/>
+  <a href="{% url 'account_signup_participant' %}">Create researcher account</a>
 {% endif %}

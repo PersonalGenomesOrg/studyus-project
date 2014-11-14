@@ -4,6 +4,12 @@ Django-user-accounts can be customized in many ways. The following attempts
 to describe the associated templates in the context of default and
 close-to-default implementations.
 
+**Specific to StudyUs changes:**
+* Instead of signup.html, StudyUs uses two
+signup templates, signup_participant.html and signup_researcher.html.
+
+-----
+
 ### signup.html
 
 Page for website visitor to create an account.
@@ -14,7 +20,7 @@ The default form is `account.forms.SignupForm`.
 * **redirect_field_name**: As defined by the SignupView's `redirect_field_name`
 attribute. The default value is `'next'`.
 * **redirect_field_value**: Override SignupView's ACCOUNT_SIGNUP_REDIRECT_URL.
-Defined in the request GET or POST parameters sent to SignupView, for example:
+Defined in the request GET or POST parameters sent to the view, for example:
       https://yoursite.example.com/account/signup/?next='/welcome/'
 
 ### signup_closed.html
@@ -75,7 +81,7 @@ The default form is `account.forms.LoginForm`.
 * **redirect_field_name**: As defined by the SignupView's `redirect_field_name`
 attribute. The default value is `'next'`.
 * **redirect_field_value**: Override LoginView's ACCOUNT_LOGIN_REDIRECT_URL.
-Defined in the request GET or POST parameters sent to LoginView, for example:
+Defined in the request GET or POST parameters sent to the view, for example:
       https://yoursite.example.com/account/login/?next='/welcome-back/'
 
 ### logout.html
@@ -86,8 +92,9 @@ request; this template should provide a button for that purpose.
 Context provided to this template:
 * **redirect_field_name**: As defined by the LogoutView's `redirect_field_name`
 attribute. The default value is `'next'`.
-* **redirect_field_value**: Override LogoutView's ACCOUNT_LOGOUT_REDIRECT_URL.
-Defined in the request GET or POST parameters sent to LogoutView, for example:
+* **redirect_field_value**: Override LogoutView's redirect to
+`ACCOUNT_LOGOUT_REDIRECT_URL`. Defined in the request GET or POST parameters
+sent to the view, for example:
       https://yoursite.example.com/account/login/?next='/goodbye/'
 
 ### password_reset.html
@@ -105,8 +112,8 @@ Page for reporting a password reset email has been sent.
 Context provided to this template:
 * **form**: The password reset form, as defined by the PasswordResetView's
 `form` attribute. The default form is `accounts.forms.PasswordResetForm`.
-* **resend** (sometimes): If 'resend' was received in the request.POST when submitting
-the form, the context includes this argument, sets to `True`.
+* **resend** (sometimes): If 'resend' was received in the request.POST when
+submitting the form, the context includes this argument, sets to `True`.
 
 ### password_reset_token.html
 
@@ -114,8 +121,9 @@ Page for reseting a password, using the token-containing URL emailed to the
 user.
 
 Context provided to this template:
-* **form**: The password reset form, as defined by the PasswordResetView's
-`form` attribute. The default form is `accounts.forms.PasswordResetForm`.
+* **form**: The password reset form, as defined by the
+PasswordResetTokenView's `form` attribute. The default form is
+`accounts.forms.PasswordResetTokenForm`.
 * **uidb36**: The User id, represented in base 36 (combined with the token by
   django.contrib.auth.tokens).
 * **token**: The token for password reset.
@@ -123,9 +131,25 @@ Context provided to this template:
   *Note: The combined data of uidb36 and token can be used to match the
   regex used by 'account_password_reset_token' when calling reverse, e.g.*
   `{% url 'account_password_reset_token' uidb36 token %}`
-* **redirect_field_name**: As defined by the LogoutView's `redirect_field_name`
-attribute. The default value is `'next'`.
-* **redirect_field_value**: Override PasswordResetTokenView's `ACCOUNT_PASSWORD_RESET_REDIRECT_URL`.
+* **redirect_field_name**: As defined by the PasswordResetTokenView's
+`redirect_field_name` attribute. The default value is `'next'`.
+* **redirect_field_value**: Override PasswordResetTokenView's redirect to
+`ACCOUNT_PASSWORD_RESET_REDIRECT_URL`. Defined in the GET or POST parameters
+sent to the view.
+
+### password_reset_token.html
+
+Page for reseting a password, using the token-containing URL emailed to the
+user.
+
+Context provided to this template:
+* **form**: The password change form, as defined by the ChangePasswordView's
+`form` attribute. The default form is `accounts.forms.ChangePasswordForm`.
+* **redirect_field_name**: As defined by the ChangePasswordView's
+`redirect_field_name` attribute. The default value is `'next'`.
+* **redirect_field_value**: Override ChangePasswordView's redirect to
+`ACCOUNT_PASSWORD_CHANGE_REDIRECT_URL`. Defined in the GET or POST parameters
+sent to the view.
 
 ## /email subdirectory
 
